@@ -17,8 +17,7 @@ services:
       - "9000:9000"
     command: ["/bin/bash", "/start-hdfs.sh"]
     networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.2
+      - hdfs_network
 
   # Nodos de almacenamiento de HDFS
   datanode1:
@@ -37,8 +36,7 @@ services:
       - namenode
     command: ["/bin/bash", "/init-datanode.sh"]
     networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.3
+      - hdfs_network
 
   datanode2:
     build: .
@@ -56,8 +54,7 @@ services:
       - namenode
     command: ["/bin/bash", "/init-datanode.sh"]
     networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.4
+      - hdfs_network
 
   # YARN Resource Manager
   resourcemanager:
@@ -81,8 +78,7 @@ services:
       - namenode
     command: ["/bin/bash", "/start-yarn.sh"]
     networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.5
+      - hdfs_network
 
   # YARN Node Manager
   nodemanager:
@@ -102,12 +98,4 @@ services:
     ports:
       - "8042:8042"   # Interfaz del NodeManager
     networks:
-      hdfs_network:
-        ipv4_address: 172.20.0.6
-
-networks:
-  hdfs_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.0.0/16
+      - hdfs_network

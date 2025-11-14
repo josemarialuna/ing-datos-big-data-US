@@ -6,18 +6,23 @@
         <name>hive.server2.enable.doAs</name>
         <value>false</value>
     </property>
+
+    <!-- Mejor que el scratch esté en HDFS compartido -->
     <property>
         <name>hive.exec.scratchdir</name>
-        <value>/opt/hive/scratch_dir</value>
+        <value>/tmp/hive</value>
     </property>
+
     <property>
         <name>hive.user.install.directory</name>
         <value>/opt/hive/install_dir</value>
     </property>
+
     <property>
         <name>hive.exec.submit.local.task.via.child</name>
         <value>false</value>
     </property>
+
     <property>
         <name>hive.compactor.worker.threads</name>
         <value>1</value>
@@ -28,18 +33,22 @@
         <name>javax.jdo.option.ConnectionURL</name>
         <value>jdbc:mysql://mysql:3306/metastore_db?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC</value>
     </property>
+
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
         <value>com.mysql.cj.jdbc.Driver</value>
     </property>
+
     <property>
         <name>javax.jdo.option.ConnectionUserName</name>
         <value>hive</value>
     </property>
+
     <property>
         <name>javax.jdo.option.ConnectionPassword</name>
         <value>password</value>
     </property>
+
     <property>
         <name>hive.metastore.uris</name>
         <value>thrift://metastore:9083</value>
@@ -51,17 +60,22 @@
         <value>false</value>
     </property>
 
-    <!-- Configuración para ejecutar en local (sin HDFS) -->
+    <!-- AHORA: warehouse en HDFS, compartido entre Hive y Trino -->
     <property>
         <name>hive.metastore.warehouse.dir</name>
-        <value>file:///opt/hive/data/warehouse</value>
-    </property>
-    <property>
-        <name>fs.defaultFS</name>
-        <value>file:///</value>
+        <value>hdfs://namenode:9000/user/hive/warehouse</value>
     </property>
 
-    <!-- Configuración del motor de ejecución en local -->
+    <!-- OJO: eliminamos fs.defaultFS aquí para que lo controle core-site.xml
+         (si quieres mantenerlo aquí, debe ser exactamente el mismo valor que en core-site.xml)
+
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://namenode:9000</value>
+    </property>
+    -->
+
+    <!-- Configuración del motor de ejecución -->
     <property>
         <name>hive.execution.engine</name>
         <value>mr</value>
@@ -72,11 +86,11 @@
         <name>hive.server2.thrift.port</name>
         <value>10000</value>
     </property>
+
     <property>
         <name>hive.server2.authentication</name>
         <value>NONE</value>
     </property>
-
 
     <!-- Asegurar que Hive usa Parquet por defecto -->
     <property>
